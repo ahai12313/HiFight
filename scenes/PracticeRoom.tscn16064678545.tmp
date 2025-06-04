@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxnxoyn52r4vk"]
+[gd_scene load_steps=7 format=3 uid="uid://bxnxoyn52r4vk"]
 
 [ext_resource type="Script" uid="uid://csgupbnggo8b8" path="res://scenes/practice_room.gd" id="1_45yew"]
 [ext_resource type="PackedScene" uid="uid://crpgr01jhg648" path="res://scenes/player/Player.tscn" id="2_yysnc"]
-[ext_resource type="PackedScene" uid="uid://di05f84elott8" path="res://scenes/enemy/enemy.tscn" id="3_buohp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_45yew"]
 size = Vector2(576, 24)
@@ -71,7 +70,7 @@ metadata/_edit_group_ = true
 
 [node name="WeaponBox" type="CharacterBody2D" parent="."]
 position = Vector2(-20, -8)
-collision_layer = 0
+collision_layer = 4
 collision_mask = 3
 script = SubResource("GDScript_yysnc")
 metadata/_edit_group_ = true
@@ -87,9 +86,9 @@ color = Color(0.985389, 0.927281, 0.42789, 1)
 position = Vector2(196.5, 274.5)
 shape = SubResource("RectangleShape2D_buohp")
 
-[node name="Enemy" parent="." instance=ExtResource("3_buohp")]
-position = Vector2(560, 55)
-
 [node name="Player" parent="." instance=ExtResource("2_yysnc")]
+position = Vector2(338, 12)
+collision_layer = 2
+metadata/_edit_group_ = true
 
 [connection signal="get_weapon" from="WeaponBox" to="Player" method="_on_weapon_box_get_weapon"]

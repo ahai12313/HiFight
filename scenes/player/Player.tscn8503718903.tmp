@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3 uid="uid://crpgr01jhg648"]
+
+[ext_resource type="Texture2D" uid="uid://jek8epmc7k1l" path="res://art/playerGrey_up1.png" id="1_mdl7e"]
+[ext_resource type="Texture2D" uid="uid://2avn7ujkychw" path="res://art/playerGrey_walk1.png" id="1_v6fml"]
+[ext_resource type="Texture2D" uid="uid://bmsidyosur4ro" path="res://art/playerGrey_walk2.png" id="2_3li8b"]
+[ext_resource type="Texture2D" uid="uid://cj2jnmruxldhs" path="res://art/playerGrey_up2.png" id="2_qu4a1"]
+
+[sub_resource type="GDScript" id="GDScript_524rm"]
+script/source = "class_name Player
+extends CharacterBody2D
+
+# 导出参数方便在编辑器调整
+@export var gravity: float = 1500.0
+@export var max_walk_speed: float = 300.0
+@export var acceleration: float = 2000.0
+@export var jump_velocity: float = -450.0
+@export var air_acceleration_multiplier: float = 0.7  # 空中加速度降低
+
+var walk_state: Walk
+var jump_state: Jump
+var idle_state: Idle
+
+# 节点引用
+@onready var state_machine: StateMachine = $StateMachine
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
+func _ready() -> void:
+	Engine.time_scale = 1
+	# 获取状态节点
+	walk_state = $StateMachine/Walk
+	jump_state = $StateMachine/Jump
+	idle_state = $StateMachine/Idle
+	state_machine.init(idle_state)
+
+func _physics_process(delta: float) -> void:
+	# 无论是否在地面都应用重力
+	velocity.y += gravity * delta
+	state_machine.physic_update(delta)
+	move_and_slide()
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5q5h1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v6fml")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mdl7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_qu4a1")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v6fml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_3li8b")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mdl7e"]
+radius = 24.2152
+height = 60.9865
+
+[node name="Player" type="CharacterBody2D"]
+script = SubResource("GDScript_524rm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_5q5h1")
+animation = &"walk"
+
+[node name="BodyCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -2)
+scale = Vector2(1.115, 1.115)
+shape = SubResource("CapsuleShape2D_mdl7e")

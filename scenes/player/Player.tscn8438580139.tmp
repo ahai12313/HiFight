@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://crpgr01jhg648"]
+
+[ext_resource type="Texture2D" uid="uid://jek8epmc7k1l" path="res://art/playerGrey_up1.png" id="1_mdl7e"]
+[ext_resource type="Script" uid="uid://bsbum1f2wovus" path="res://scenes/player/player.gd" id="1_qu4a1"]
+[ext_resource type="Texture2D" uid="uid://2avn7ujkychw" path="res://art/playerGrey_walk1.png" id="1_v6fml"]
+[ext_resource type="Texture2D" uid="uid://bmsidyosur4ro" path="res://art/playerGrey_walk2.png" id="2_3li8b"]
+[ext_resource type="Texture2D" uid="uid://cj2jnmruxldhs" path="res://art/playerGrey_up2.png" id="2_qu4a1"]
+[ext_resource type="Script" uid="uid://cspd6riyte77c" path="res://scenes/player/jump.gd" id="6_c3xxp"]
+[ext_resource type="Script" uid="uid://clyt1elgjlalu" path="res://classes/StateMachine.gd" id="7_npwbq"]
+[ext_resource type="Script" uid="uid://ttu6fn0gccbv" path="res://scenes/player/idle.gd" id="8_v42im"]
+[ext_resource type="Script" uid="uid://0i301ont7no7" path="res://scenes/player/walk.gd" id="9_pn6s4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5q5h1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v6fml")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mdl7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_qu4a1")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v6fml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_3li8b")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mdl7e"]
+radius = 24.2152
+height = 60.9865
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_qu4a1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_5q5h1")
+animation = &"walk"
+
+[node name="BodyCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -2)
+scale = Vector2(1.115, 1.115)
+shape = SubResource("CapsuleShape2D_mdl7e")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("7_npwbq")
+metadata/_custom_type_script = "uid://clyt1elgjlalu"
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("6_c3xxp")
+metadata/_custom_type_script = "uid://cspd6riyte77c"
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("8_v42im")
+metadata/_custom_type_script = "uid://ttu6fn0gccbv"
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("9_pn6s4")
+metadata/_custom_type_script = "uid://0i301ont7no7"

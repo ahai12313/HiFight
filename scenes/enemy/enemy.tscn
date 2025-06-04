@@ -1,0 +1,76 @@
+[gd_scene load_steps=12 format=3 uid="uid://di05f84elott8"]
+
+[ext_resource type="Texture2D" uid="uid://bd2mp4spuefmy" path="res://art/enemyWalking_1.png" id="1_a3pup"]
+[ext_resource type="Script" uid="uid://bx1t7qdct7eby" path="res://scenes/enemy/enemy.gd" id="1_gl05p"]
+[ext_resource type="Script" uid="uid://cau6353siu0ye" path="res://scenes/enemy/enemy_stats.gd" id="1_nbhyu"]
+[ext_resource type="Texture2D" uid="uid://iftbsmm51wgk" path="res://art/enemyWalking_2.png" id="2_40wdo"]
+[ext_resource type="Script" uid="uid://dkwttiveb0mf8" path="res://classes/state_machine.gd" id="3_40wdo"]
+[ext_resource type="Script" uid="uid://dauhax7y26sns" path="res://scenes/enemy/EnemyIdleState.gd" id="5_gl05p"]
+[ext_resource type="Script" uid="uid://csfwqn7p3iidn" path="res://scenes/enemy/enemy_hurt_box.gd" id="6_cwlon"]
+[ext_resource type="Script" uid="uid://jwo7fgg08cip" path="res://scenes/enemy/enemy_flash.gd" id="7_nbhyu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tjssy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_a3pup")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_40wdo")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a3pup"]
+radius = 48.0
+height = 128.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gl05p"]
+radius = 48.0
+height = 128.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 9
+script = ExtResource("1_gl05p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = -1.5708
+sprite_frames = SubResource("SpriteFrames_tjssy")
+animation = &"run"
+frame = 1
+frame_progress = 0.513464
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.00268618
+shape = SubResource("CapsuleShape2D_a3pup")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_40wdo")
+metadata/_custom_type_script = "uid://dkwttiveb0mf8"
+
+[node name="EnemyIdleState" type="Node" parent="StateMachine"]
+script = ExtResource("5_gl05p")
+metadata/_custom_type_script = "uid://dauhax7y26sns"
+
+[node name="EnemyHurtBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("6_cwlon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyHurtBox"]
+shape = SubResource("CapsuleShape2D_gl05p")
+
+[node name="EnemyFlash" type="ColorRect" parent="."]
+offset_left = -48.0
+offset_top = -64.0
+offset_right = 48.0
+offset_bottom = 64.0
+color = Color(1, 1, 1, 0)
+script = ExtResource("7_nbhyu")
+
+[node name="EnemyStats" type="Node" parent="."]
+script = ExtResource("1_nbhyu")
+metadata/_custom_type_script = "uid://cau6353siu0ye"

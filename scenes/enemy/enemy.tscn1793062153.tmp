@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://di05f84elott8"]
+
+[ext_resource type="Texture2D" uid="uid://bd2mp4spuefmy" path="res://art/enemyWalking_1.png" id="1_a3pup"]
+[ext_resource type="Script" uid="uid://bx1t7qdct7eby" path="res://scenes/enemy/enemy.gd" id="1_gl05p"]
+[ext_resource type="Texture2D" uid="uid://iftbsmm51wgk" path="res://art/enemyWalking_2.png" id="2_40wdo"]
+[ext_resource type="Script" uid="uid://dkwttiveb0mf8" path="res://classes/state_machine.gd" id="3_40wdo"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tjssy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_a3pup")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_40wdo")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a3pup"]
+radius = 48.0
+height = 128.0
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_gl05p")
+gravity = null
+can_air_attack = null
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = -1.5708
+sprite_frames = SubResource("SpriteFrames_tjssy")
+animation = &"run"
+frame = 1
+frame_progress = 0.513464
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.00268618
+shape = SubResource("CapsuleShape2D_a3pup")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_40wdo")
+metadata/_custom_type_script = "uid://dkwttiveb0mf8"
